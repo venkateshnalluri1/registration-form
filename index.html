@@ -197,8 +197,12 @@
 
       const formData = new FormData(form);
 
-      fetch(scriptURL, { method: "POST", body: formData })
-        .then((response) => {
+      // mode: "no-cors" is required for Google Apps Script web apps —
+      // Apps Script doesn't send CORS headers back, so without this the
+      // browser blocks reading the response and throws, even though the
+      // row is usually still written to the sheet.
+      fetch(scriptURL, { method: "POST", body: formData, mode: "no-cors" })
+        .then(() => {
           loading.style.display = "none"; // Hide loader
           swal("Done", "Submitted Successfully.", "success").then(() => {
             window.location.href = "Next.html";
